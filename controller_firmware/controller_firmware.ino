@@ -1,6 +1,14 @@
 #include "global.h"
+#include "sensor_monitor.h"
+
+unsigned long previousMillis = 0;
+const long interval = 100;
 
 String cmd = "";
+
+//RPM Test
+int rpmTest = 0;
+int rpmChange = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -19,6 +27,12 @@ void setup() {
 
     digitalWrite(Relay[i], RelayState[i]);
   }
+
+  // Initialize RPM pins
+  pinMode(RPMSensePin1, INPUT_PULLUP);
+  pinMode(RPMSensePin2, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(RPMSensePin1), interruptRPM1, FALLING);
+  attachInterrupt(digitalPinToInterrupt(RPMSensePin2), interruptRPM2, FALLING);
 }
 
 void loop() {
@@ -242,5 +256,52 @@ void loop() {
         Serial.println("Relay 34 Triggered");
       }
     }
+  }
+
+  if (millis() - previousMillis >= interval) {
+    previousMillis = millis();
+
+    String LvlSenseVal1 = String(getLevelReading(analogRead(LvlSensePin1)), 1);
+    String LvlSenseVal2 = String(getLevelReading(analogRead(LvlSensePin2)), 1);
+    String LvlSenseVal3 = String(getLevelReading(analogRead(LvlSensePin3)), 1);
+    String LvlSenseVal4 = String(getLevelReading(analogRead(LvlSensePin4)), 1);
+    String LvlSenseVal5 = String(getLevelReading(analogRead(LvlSensePin5)), 1);
+
+    String BattSenseVal1 = String(getBatteryReading(analogRead(BattSensePin1)), 1);
+    String BattSenseVal2 = String(getBatteryReading(analogRead(BattSensePin2)), 1);
+
+    String OilSenseVal1 = String(getOilPressureReading(analogRead(OilPresSensePin1)), 1);
+    String OilSenseVal2 = String(getOilPressureReading(analogRead(OilPresSensePin2)), 1);
+
+    String TempSenseVal1 = String(getTemperatureReading(analogRead(TempSensePin1)), 1);
+    String TempSenseVal2 = String(getTemperatureReading(analogRead(TempSensePin2)), 1);
+
+    String RPMSenseVal1 = String(getRPMReading1());
+    String RPMSenseVal2 = String(getRPMReading2());
+
+//    // RPM Test (Comment if not in use)
+//    if (rpmTest >= 6000)
+//      rpmChange = -1;
+//
+//    if (rpmTest <= 0)
+//      rpmChange = 1;
+//
+//    rpmTest = rpmTest + rpmChange;
+//    RPMSenseVal1 = String(rpmTest);
+//    RPMSenseVal2 = String(rpmTest);
+    
+    Serial1.print(":L1:" + LvlSenseVal1);
+    Serial1.print(":L2:" + LvlSenseVal2);
+    Serial1.print(":L3:" + LvlSenseVal3);
+    Serial1.print(":L4:" + LvlSenseVal4);
+    Serial1.print(":L5:" + LvlSenseVal5);
+    Serial1.print(":B1:" + BattSenseVal1);
+    Serial1.print(":B2:" + BattSenseVal2);
+    Serial1.print(":O1:" + OilSenseVal1);
+    Serial1.print(":O2:" + OilSenseVal2);
+    Serial1.print(":T1:" + TempSenseVal1);
+    Serial1.print(":T2:" + TempSenseVal2);
+    Serial1.print(":RPM1:" + RPMSenseVal1);
+    Serial1.print(":RPM2:" + RPMSenseVal2);
   }
 }
