@@ -32,6 +32,8 @@ void setup() {
   pinMode(RPMSensePin2, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(RPMSensePin1), interruptRPM1, FALLING);
   attachInterrupt(digitalPinToInterrupt(RPMSensePin2), interruptRPM2, FALLING);
+
+  delay(2000);
 }
 
 void loop() {
@@ -249,10 +251,10 @@ void loop() {
 //
 //    if (rpmTest <= 0)
 //      rpmChange = 1;
-//
-//    rpmTest = rpmTest + rpmChange;
-//    RPMSenseVal1 = String(rpmTest);
-//    RPMSenseVal2 = String(rpmTest);
+
+    rpmTest = rpmTest + rpmChange;
+    RPMSenseVal1 = String(rpmTest);
+    RPMSenseVal2 = String(rpmTest);
     
     Serial.print(":L1:" + LvlSenseVal1);
     Serial.print(":L2:" + LvlSenseVal2);
