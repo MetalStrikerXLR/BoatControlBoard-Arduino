@@ -258,17 +258,6 @@ void loop() {
     String RPMSenseVal1 = String(getRPMReading1());
     String RPMSenseVal2 = String(getRPMReading2());
 
-    //    // RPM Test (Comment if not in use)
-    //    if (rpmTest >= 6000)
-    //      rpmChange = -1;
-    //
-    //    if (rpmTest <= 0)
-    //      rpmChange = 1;
-
-    //    rpmTest = rpmTest + rpmChange;
-    //    RPMSenseVal1 = String(rpmTest);
-    //    RPMSenseVal2 = String(rpmTest);
-
     Serial.print(":L1:" + LvlSenseVal1);
     Serial.print(":L2:" + LvlSenseVal2);
     Serial.print(":L3:" + LvlSenseVal3);
