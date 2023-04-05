@@ -265,9 +265,9 @@ void loop() {
     //    if (rpmTest <= 0)
     //      rpmChange = 1;
 
-    rpmTest = rpmTest + rpmChange;
-    RPMSenseVal1 = String(rpmTest);
-    RPMSenseVal2 = String(rpmTest);
+    //    rpmTest = rpmTest + rpmChange;
+    //    RPMSenseVal1 = String(rpmTest);
+    //    RPMSenseVal2 = String(rpmTest);
 
     Serial.print(":L1:" + LvlSenseVal1);
     Serial.print(":L2:" + LvlSenseVal2);
@@ -283,5 +283,7 @@ void loop() {
     Serial.print(":RPM1:" + RPMSenseVal1);
     Serial.print(":RPM2:" + RPMSenseVal2);
     Serial.print(":CMD:" + CMD);
+    
+    CMD = "";
   }
 }
